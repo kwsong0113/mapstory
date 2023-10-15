@@ -38,12 +38,16 @@ export default class UserConcept {
     return this.sanitizeUser(user);
   }
 
-  async idsToUsernames(ids: ObjectId[]) {
+  async getIdToUsername(ids: ObjectId[]) {
     const users = await this.users.readMany({ _id: { $in: ids } });
 
     // Store strings in Map because ObjectId comparison by reference is wrong
-    const idToUser = new Map(users.map((user) => [user._id.toString(), user]));
-    return ids.map((id) => idToUser.get(id.toString())?.username ?? "DELETED_USER");
+    return new Map(users.map((user) => [user._id.toString(), user.username]));
+  }
+
+  async idsToUsernames(ids: ObjectId[]) {
+    const idsToUsernames = await this.getIdToUsername(ids);
+    return ids.map((id) => idsToUsernames.get(id.toString()) ?? "DELETED_USER");
   }
 
   async getUsers(username?: string) {
