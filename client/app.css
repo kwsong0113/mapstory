@@ -21,3 +21,7 @@
 .alert {
   @apply flex-row flex gap-2;
 }
+
+.h-screen {
+  height: calc(var(--vh, 1vh) * 100);
+}

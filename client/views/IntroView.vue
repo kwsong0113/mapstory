@@ -4,7 +4,7 @@ import router from "@/router";
 </script>
 
 <template>
-  <main class="min-h-screen">
+  <main class="h-screen">
     <section class="hero h-full absolute z-10">
       <div class="hero-content text-center">
         <div class="font-poppins">

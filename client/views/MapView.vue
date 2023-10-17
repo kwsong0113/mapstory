@@ -8,7 +8,7 @@ const { mutate: logoutUser } = useLogoutUser();
 </script>
 
 <template>
-  <main class="min-h-screen">
+  <main class="h-screen">
     <h1>Welcome {{ currentUsername }}</h1>
     <button @click="() => logoutUser()" class="btn btn-primary">Log Out</button>
   </main>
