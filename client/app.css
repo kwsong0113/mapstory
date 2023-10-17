@@ -14,10 +14,6 @@
   @apply text-base-100;
 }
 
-.toast {
-  @apply z-20;
-}
-
 .alert {
   @apply flex-row flex gap-2;
 }

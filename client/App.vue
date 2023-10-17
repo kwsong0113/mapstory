@@ -3,7 +3,7 @@ import { onBeforeMount, ref } from "vue";
 import { RouterView } from "vue-router";
 import { useFetchSession } from "./services/user";
 
-import ToastAlert from "./components/General/ToastAlert.vue";
+import ToastGroup from "./components/General/ToastGroup.vue";
 import { calcViewPort } from "./utils/calcViewPort";
 import LoadingView from "./views/LoadingView.vue";
 
@@ -23,5 +23,5 @@ onBeforeMount(() => {
 <template>
   <LoadingView v-if="showInitialLoading" />
   <RouterView v-else />
-  <ToastAlert />
+  <ToastGroup />
 </template>

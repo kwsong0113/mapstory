@@ -1,25 +1,34 @@
 import { defineStore } from "pinia";
+import { v4 as uuid } from "uuid";
 import { ref } from "vue";
 
-type Toast = null | {
+type Toast = {
   message: string;
   style: "success" | "error";
 };
 
+type IToast = Toast & {
+  id: string;
+};
+
 export const useToastStore = defineStore("toast", () => {
-  const toast = ref<Toast>(null);
+  const toasts = ref<IToast[]>([]);
 
   const showToast = (t: Toast, timeoutMs = 1500) => {
-    toast.value = t;
-    setTimeout(hideToast, timeoutMs);
+    const id = uuid();
+    toasts.value.push({
+      ...t,
+      id,
+    });
+    setTimeout(() => hideToast(id), timeoutMs);
   };
 
-  const hideToast = () => {
-    toast.value = null;
+  const hideToast = (toastId: string) => {
+    toasts.value = toasts.value.filter(({ id }) => id !== toastId);
   };
 
   return {
-    toast,
+    toasts,
     showToast,
     hideToast,
   };
