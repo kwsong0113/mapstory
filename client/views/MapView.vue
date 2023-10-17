@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { useLogoutUser } from "../services/user";
 import { useUserStore } from "../stores/user";
-import IntroView from "./IntroView.vue";
-import MapView from "./MapView.vue";
 
-const { isLoggedIn } = storeToRefs(useUserStore());
+const { currentUsername } = storeToRefs(useUserStore());
+const { mutate: logoutUser } = useLogoutUser();
 </script>
 
 <template>
-  <MapView v-if="isLoggedIn" />
-  <IntroView v-else />
+  <main class="min-h-screen">
+    <h1>Welcome {{ currentUsername }}</h1>
+    <button @click="() => logoutUser()" class="btn btn-primary">Log Out</button>
+  </main>
 </template>
 
 <style scoped>

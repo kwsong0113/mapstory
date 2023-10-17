@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn {
+  @apply normal-case;
+}
+
+.btn-neutral {
+  @apply text-base-100;
+}
+
+.btn-primary {
+  @apply text-base-100;
+}
+
+.toast {
+  @apply z-20;
+}
+
+.alert {
+  @apply flex-row flex gap-2;
+}

@@ -4,8 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
-import NotFoundView from "../views/NotFoundView.vue";
-import SettingView from "../views/SettingView.vue";
+import SignUpView from "../views/SignUpView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,12 +14,12 @@ const router = createRouter({
       name: "Home",
       component: HomeView,
     },
-    {
-      path: "/setting",
-      name: "Settings",
-      component: SettingView,
-      meta: { requiresAuth: true },
-    },
+    // {
+    //   path: "/setting",
+    //   name: "Settings",
+    //   component: SettingView,
+    //   meta: { requiresAuth: true },
+    // },
     {
       path: "/login",
       name: "Login",
@@ -29,15 +28,27 @@ const router = createRouter({
       beforeEnter: (to, from) => {
         const { isLoggedIn } = storeToRefs(useUserStore());
         if (isLoggedIn.value) {
-          return { name: "Settings" };
+          return { name: "Home" };
         }
       },
     },
     {
-      path: "/:catchAll(.*)",
-      name: "not-found",
-      component: NotFoundView,
+      path: "/signup",
+      name: "SignUp",
+      component: SignUpView,
+      meta: { requiresAuth: false },
+      beforeEnter: (to, from) => {
+        const { isLoggedIn } = storeToRefs(useUserStore());
+        if (isLoggedIn.value) {
+          return { name: "Home" };
+        }
+      },
     },
+    // {
+    //   path: "/:catchAll(.*)",
+    //   name: "not-found",
+    //   component: NotFoundView,
+    // },
   ],
 });
 
