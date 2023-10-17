@@ -1,33 +1,14 @@
 <script setup lang="ts">
 import { watchLocation } from "@/utils/watchLocation";
 import LoadingView from "@/views/LoadingView.vue";
-import { VMap } from "@geoql/v-mapkit.js";
 import { storeToRefs } from "pinia";
-import { computed, onBeforeMount, ref } from "vue";
+import { onBeforeMount } from "vue";
+import { GoogleMap } from "vue3-google-map";
 import { useLocationStore } from "../../stores/location";
-
-const jwt = import.meta.env.VITE_MAPKIT_JWT;
-console.log(import.meta);
-
-const loadingObject = ref({
-  init: true,
-  load: true,
-});
+import MyMarker from "./MyMarker.vue";
 
 const { currentLocation } = storeToRefs(useLocationStore());
-
-const isLoading = computed(() => loadingObject.value.init || loadingObject.value.load || currentLocation === null);
-
-const mapInitialized = (e: any) => {
-  if (e) {
-    loadingObject.value.init = false;
-  }
-};
-const mapLoaded = (e: any) => {
-  if (e) {
-    loadingObject.value.load = false;
-  }
-};
+const API_KEY = import.meta.env.VITE_GOOGLEMAP_API_KEY;
 
 onBeforeMount(() => {
   watchLocation();
@@ -35,27 +16,10 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <LoadingView v-if="isLoading" class="w-screen absolute z-10 bg-mapground"></LoadingView>
-  <VMap
-    class="w-full h-full"
-    :access-token="jwt"
-    :map-options="{
-      showsUserLocation: true,
-      tracksUserLocation: true,
-      showsZoomControl: true,
-      showsUserLocationControl: true,
-      showsScale: true,
-      showsCompass: false,
-      cameraDistance: 2500,
-    }"
-    :geocoder-options="{
-      getsUserLocation: true,
-    }"
-    @map-initialized="mapInitialized"
-    @map-loaded="mapLoaded"
-  >
-    <slot></slot>
-  </VMap>
+  <LoadingView v-if="currentLocation === null" class="w-screen absolute z-10"></LoadingView>
+  <GoogleMap :api-key="API_KEY" :center="currentLocation" :zoom="15" class="h-screen w-screen">
+    <MyMarker />
+  </GoogleMap>
   <dialog id="location_permission" class="modal z-30">
     <div class="modal-box">
       <h3 class="font-bold text-lg">Allow Location Access</h3>
