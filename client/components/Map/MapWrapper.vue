@@ -17,7 +17,7 @@ onBeforeMount(() => {
 
 <template>
   <LoadingView v-if="currentLocation === null" class="w-screen absolute z-10"></LoadingView>
-  <GoogleMap :api-key="API_KEY" :center="currentLocation" :zoom="15" class="h-screen w-screen">
+  <GoogleMap :api-key="API_KEY" :center="currentLocation" :disable-default-ui="true" :zoom="15" class="h-screen w-screen">
     <MyMarker />
   </GoogleMap>
   <dialog id="location_permission" class="modal z-30">
