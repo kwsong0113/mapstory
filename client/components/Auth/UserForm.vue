@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, watchEffect } from "vue";
 import AsyncButton from "@/components/General/AsyncButton.vue";
-import { useCreateUser, useLoginUser } from "@/services/user";
-import { storeToRefs } from "pinia";
-import { useUserStore } from "@/stores/user";
 import router from "@/router";
+import { useCreateUser, useLoginUser } from "@/services/user";
+import { useUserStore } from "@/stores/user";
+import { storeToRefs } from "pinia";
+import { ref, watchEffect } from "vue";
 
 const { type } = defineProps<{
   type: "signup" | "signin";
@@ -12,8 +12,8 @@ const { type } = defineProps<{
 
 const username = ref("");
 const password = ref("");
-const { mutate: createUser, isCreateUserLoading } = useCreateUser();
-const { mutate: loginUser, isLoginUserLoading } = useLoginUser();
+const { mutate: createUser, isLoading: isCreateUserLoading } = useCreateUser();
+const { mutate: loginUser, isLoading: isLoginUserLoading } = useLoginUser();
 const { isLoggedIn } = storeToRefs(useUserStore());
 
 const onSubmit = () => {
