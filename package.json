@@ -50,6 +50,7 @@
     "vue-tsc": "^1.8.11"
   },
   "dependencies": {
+    "@geoql/v-mapkit.js": "^0.3.0",
     "@tanstack/vue-query": "^4.37.0",
     "connect-mongo": "^5.0.0",
     "cors": "^2.8.5",

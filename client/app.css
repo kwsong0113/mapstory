@@ -21,3 +21,7 @@
 .h-screen {
   height: calc(var(--vh, 1vh) * 100);
 }
+
+.bg-mapground {
+  background-color: #f8f5ed; /* This is an example color */
+}
