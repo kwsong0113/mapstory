@@ -19,14 +19,9 @@ const { currentUsername } = storeToRefs(useUserStore());
 <template>
   <CustomMarker :options="{ position: location, anchorPoint: 'BOTTOM_LEFT' }">
     <button @click="$emit('click')" class="indicator text-start">
-      <!-- <span v-if="reaction" class="indicator-item">
+      <span v-if="reaction" class="indicator-item">
         <kbd class="kbd kbd-md">
           <ReactionIcon :type="reaction" />
-        </kbd>
-      </span> -->
-      <span class="indicator-item">
-        <kbd class="kbd kbd-md">
-          <ReactionIcon type="sad" />
         </kbd>
       </span>
       <div v-if="post.pieces.length === 1" class="chat chat-start">

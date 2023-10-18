@@ -5,6 +5,7 @@ import "@webzlodimir/vue-bottom-sheet/dist/style.css";
 import { defineExpose, ref } from "vue";
 import { Location } from "../../types/location";
 import { Post } from "../../types/post";
+import ReactionButtonGroup from "../Reaction/ReactionButtonGroup.vue";
 import PostPiece from "./PostPiece.vue";
 
 const post = ref<Post | null>(null);
@@ -36,5 +37,6 @@ defineExpose({ open, close });
         </template>
       </template>
     </section>
+    <ReactionButtonGroup v-if="post" :post-id="post?._id" />
   </VueBottomSheet>
 </template>

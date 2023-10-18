@@ -72,6 +72,7 @@ class Routes {
     } else {
       markers = await MapPost.findNearby({}, limit, location);
     }
+
     const mostFrequentReactions = await Reaction.getMostFrequentReactions(markers.map(({ poi }) => poi));
 
     return Responses.postMarkers(markers.map((marker, idx) => ({ ...marker, reaction: mostFrequentReactions[idx] as ReactionChoice | undefined })));
@@ -129,8 +130,9 @@ class Routes {
    */
   @Router.get("/posts/:_id/reactions")
   async getReactions(_id: ObjectId) {
-    await Post.isValidPost(_id);
-    return await Responses.reactions(await Reaction.getReactions(_id));
+    const id = new ObjectId(_id);
+    await Post.isValidPost(id);
+    return await Responses.reactions(await Reaction.getReactions(id));
   }
 
   /**
@@ -147,7 +149,7 @@ class Routes {
       // Remove sentiment score of previous reaction from HeatMap
       await HeatMap.remove(location, Reaction.getSentiment(reaction.choice));
     }
-    const result = await Reaction.react(_id, user, choice);
+    const result = await Reaction.react(new ObjectId(_id), user, choice);
     // Add sentiment of reaction to HeatMap
     await HeatMap.add(location, Reaction.getSentiment(choice));
     return result;
@@ -158,16 +160,18 @@ class Routes {
    * Remove sentiment data from HeatMap
    */
   @Router.delete("/posts/:_id/reactions")
-  async unreact(session: WebSessionDoc, _id: ObjectId, location: Location) {
+  async unreact(session: WebSessionDoc, _id: ObjectId, lat: string, lng: string) {
+    const id = new ObjectId(_id);
+    const location = { lat: Number(lat), lng: Number(lng) };
     Locations.isValidLocation(location);
-    await Post.isValidPost(_id);
+    await Post.isValidPost(id);
     const user = WebSession.getUser(session);
-    const reaction = await Reaction.getReaction(_id, user);
+    const reaction = await Reaction.getReaction(id, user);
     if (reaction) {
       // Remove sentiment score of reaction from HeatMap
       await HeatMap.remove(location, Reaction.getSentiment(reaction.choice));
     }
-    return await Reaction.unreact(_id, user);
+    return await Reaction.unreact(id, user);
   }
 
   /**
