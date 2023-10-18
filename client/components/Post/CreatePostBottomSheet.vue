@@ -10,7 +10,7 @@ import AsyncButton from "../General/AsyncButton.vue";
 
 const content = ref("");
 const { currentLocation } = storeToRefs(useLocationStore());
-const { data: address } = useFetchAddress(currentLocation.value ?? { lat: 0, lng: 0 });
+const { data: address } = useFetchAddress(currentLocation);
 const { mutate, isLoading } = useCreatePost({
   onSuccess: () => {
     close?.();
