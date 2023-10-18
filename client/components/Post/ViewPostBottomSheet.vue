@@ -37,6 +37,6 @@ defineExpose({ open, close });
         </template>
       </template>
     </section>
-    <ReactionButtonGroup v-if="post" :post-id="post?._id" />
+    <ReactionButtonGroup v-if="isOpen && post" :post-id="post?._id" />
   </VueBottomSheet>
 </template>
