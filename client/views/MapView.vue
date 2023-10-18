@@ -5,17 +5,23 @@ import FloatingButtonGroup from "../components/Map/FloatingButtonGroup.vue";
 import MapWrapper from "../components/Map/MapWrapper.vue";
 import MyMarker from "../components/Map/MyMarker.vue";
 import CreatePostBottomSheet from "../components/Post/CreatePostBottomSheet.vue";
+import PostMarker from "../components/Post/PostMarker.vue";
+import ViewPostBottomSheet from "../components/Post/ViewPostBottomSheet.vue";
+import { usePostMarkers } from "../services/post";
 import { useLocationStore } from "../stores/location";
 
-const bottomSheetRef = ref<InstanceType<typeof CreatePostBottomSheet> | null>(null);
+const createPostBottomSheet = ref<InstanceType<typeof CreatePostBottomSheet> | null>(null);
+const viewPostBottomSheet = ref<InstanceType<typeof ViewPostBottomSheet> | null>(null);
 const mapRef = ref<InstanceType<typeof MapWrapper> | null>(null);
 const { currentLocation } = storeToRefs(useLocationStore());
+const { data: postMarkers } = usePostMarkers(currentLocation);
 </script>
 
 <template>
   <main class="w-screen h-screen">
     <MapWrapper ref="mapRef">
       <MyMarker />
+      <PostMarker v-for="{ post, location } in postMarkers" :post="post" :location="location" :key="post._id" @click="() => viewPostBottomSheet?.open(post)" />
     </MapWrapper>
     <FloatingButtonGroup
       @top-click="
@@ -25,8 +31,9 @@ const { currentLocation } = storeToRefs(useLocationStore());
           }
         }
       "
-      @bottom-click="() => bottomSheetRef?.open()"
+      @bottom-click="() => createPostBottomSheet?.open()"
     />
   </main>
-  <CreatePostBottomSheet ref="bottomSheetRef" />
+  <CreatePostBottomSheet ref="createPostBottomSheet" />
+  <ViewPostBottomSheet ref="viewPostBottomSheet" />
 </template>

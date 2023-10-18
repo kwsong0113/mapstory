@@ -30,7 +30,7 @@ export const useLogoutUser = () => {
   });
 };
 
-export const useFetchSession = ({ onSettled }: { onSettled?: () => void }) => {
+export const useSession = ({ onSettled }: { onSettled?: () => void }) => {
   const { updateUsername, resetStore } = useUserStore();
 
   return useQuery({
