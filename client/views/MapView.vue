@@ -21,7 +21,17 @@ const { data: postMarkers } = usePostMarkers(currentLocation);
   <main class="w-screen h-screen">
     <MapWrapper ref="mapRef">
       <MyMarker />
-      <PostMarker v-for="{ post, location } in postMarkers" :post="post" :location="location" :key="post._id" @click="() => viewPostBottomSheet?.open(post)" />
+      <PostMarker
+        v-for="{ post, location } in postMarkers"
+        :post="post"
+        :location="location"
+        :key="post._id"
+        @click="
+          () => {
+            viewPostBottomSheet?.open(post, location);
+          }
+        "
+      />
     </MapWrapper>
     <FloatingButtonGroup
       @top-click="
