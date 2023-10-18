@@ -1,9 +1,9 @@
 <script setup lang="ts">
 interface Props {
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
-const { isLoading } = defineProps<Props>();
+const { isLoading = false } = defineProps<Props>();
 </script>
 
 <template>

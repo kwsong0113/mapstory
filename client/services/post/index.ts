@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { Ref } from "vue";
 import { Location } from "../../types/location";
-import { createPost, deletePostPiece, fetchPosts } from "./apis";
+import { createPost, deletePostPiece, fetchPosts, updatePostPiece } from "./apis";
 
 export const useCreatePost = ({ onSuccess }: { onSuccess: () => void }) => {
   const queryClient = useQueryClient();
@@ -33,6 +33,17 @@ export const useDeletePostPiece = ({ onSuccess }: { onSuccess: () => void }) => 
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deletePostPiece,
+    onSuccess() {
+      void queryClient.invalidateQueries(["posts"]);
+      onSuccess();
+    },
+  });
+};
+
+export const useUpdatePostPiece = ({ onSuccess }: { onSuccess: () => void }) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updatePostPiece,
     onSuccess() {
       void queryClient.invalidateQueries(["posts"]);
       onSuccess();

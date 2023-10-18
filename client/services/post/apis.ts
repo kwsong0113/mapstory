@@ -1,5 +1,5 @@
 import { Location } from "../../types/location";
-import { Post } from "../../types/post";
+import { Post, PostPiece } from "../../types/post";
 import { fetchy } from "../../utils/fetchy";
 
 type CreatePostRequest = {
@@ -24,6 +24,14 @@ export const fetchPosts = async (query: FetchPostsRequest) => {
     query,
     alert: false,
   })) as { post: Post; location: Location }[];
+};
+
+export const updatePostPiece = async ({ _id, content }: Omit<PostPiece, "author">) => {
+  await fetchy(`/api/posts/${_id}`, "PATCH", {
+    body: {
+      content,
+    },
+  });
 };
 
 export const deletePostPiece = async (id: string) => {
