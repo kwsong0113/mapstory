@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import { useDeletePostPiece } from "../../services/post";
 import { useUserStore } from "../../stores/user";
 import { PostPiece } from "../../types/post";
@@ -11,6 +12,7 @@ const { piece } = defineProps<{
 const emit = defineEmits(["delete"]);
 
 const { currentUsername } = storeToRefs(useUserStore());
+const isAuthor = computed(() => currentUsername.value === piece.author);
 const { mutate: deletePostPiece, isLoading } = useDeletePostPiece({
   onSuccess() {
     emit("delete");
@@ -20,9 +22,9 @@ const { mutate: deletePostPiece, isLoading } = useDeletePostPiece({
 <template>
   <div class="flex justify-between items-center mb-2">
     <span class="author">{{ "@" + piece.author }}</span>
-    <AsyncButton :is-loading="isLoading" class="btn btn-warning min-h-6 h-6 w-24" @click="deletePostPiece(piece._id)">DELETE</AsyncButton>
+    <AsyncButton v-if="isAuthor" :is-loading="isLoading" class="btn btn-warning min-h-6 h-6 w-24" @click="deletePostPiece(piece._id)">Delete</AsyncButton>
   </div>
-  <article class="content" :class="{ my: currentUsername === piece.author }">{{ piece.content }}</article>
+  <article class="content" :class="{ my: isAuthor }">{{ piece.content }}</article>
 </template>
 
 <style scoped>
