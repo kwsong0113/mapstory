@@ -50,7 +50,11 @@
     "vue-tsc": "^1.8.11"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@tanstack/vue-query": "^4.37.0",
+    "@webzlodimir/vue-bottom-sheet": "^3.0.5",
     "connect-mongo": "^5.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

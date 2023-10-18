@@ -43,4 +43,3 @@ watchEffect(() => {
     }}</AsyncButton>
   </form>
 </template>
-@/services/user

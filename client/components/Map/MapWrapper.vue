@@ -5,7 +5,6 @@ import { storeToRefs } from "pinia";
 import { onBeforeMount } from "vue";
 import { GoogleMap } from "vue3-google-map";
 import { useLocationStore } from "../../stores/location";
-import MyMarker from "./MyMarker.vue";
 
 const { currentLocation } = storeToRefs(useLocationStore());
 const API_KEY = import.meta.env.VITE_GOOGLEMAP_API_KEY;
@@ -17,8 +16,8 @@ onBeforeMount(() => {
 
 <template>
   <LoadingView v-if="currentLocation === null" class="w-screen absolute z-10"></LoadingView>
-  <GoogleMap :api-key="API_KEY" :center="currentLocation" :disable-default-ui="true" :zoom="15" class="h-screen w-screen">
-    <MyMarker />
+  <GoogleMap :api-key="API_KEY" :center="currentLocation" :disable-default-ui="true" :keyboard-shortcuts="false" :zoom="15" class="h-screen w-screen">
+    <slot></slot>
   </GoogleMap>
   <dialog id="location_permission" class="modal z-30">
     <div class="modal-box">
