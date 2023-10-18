@@ -36,6 +36,7 @@ defineExpose({ open, close });
           <PostPiece :piece="post.pieces[1]" @delete="close" />
         </template>
       </template>
+      <h1 class="text-6xl text-white">-</h1>
     </section>
     <ReactionButtonGroup v-if="isOpen && post" :post-id="post?._id" />
   </VueBottomSheet>
