@@ -14,10 +14,10 @@ const { postId } = defineProps<{
 const { currentUsername } = storeToRefs(useUserStore());
 const { currentLocation } = storeToRefs(useLocationStore());
 
-const { data: reactions } = useReactions(postId);
+const { data: reactions, isFetching: isFetching } = useReactions(postId);
 const { mutate: sendReaction, isLoading: isSendLoading } = useSendReaction();
 const { mutate: deleteReaction, isLoading: isDeleteLoading } = useDeleteReaction();
-const isLoading = computed(() => isSendLoading.value || isDeleteLoading.value);
+const isLoading = computed(() => isSendLoading.value || isDeleteLoading.value || isFetching.value);
 const myReaction = computed(() => reactions.value?.find(({ by }) => by === currentUsername.value)?.choice);
 const reactionCount = computed(
   () =>
