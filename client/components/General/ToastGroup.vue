@@ -7,7 +7,7 @@ const { toasts } = storeToRefs(useToastStore());
 
 <template>
   <TransitionGroup name="slide">
-    <article v-for="toast in toasts" :key="toast.id" class="fixed top-0 w-full p-2 pt-[9px] z-20">
+    <article v-for="toast in toasts" :key="toast.id" class="fixed top-0 w-full p-2 pt-[9px] z-[100000]">
       <div class="alert" :class="toast.style === 'error' ? 'alert-error' : ''">
         <svg v-if="toast.style === 'error'" xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />

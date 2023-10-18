@@ -26,7 +26,7 @@ defineExpose({
 
 <template>
   <LoadingView v-if="currentLocation === null" class="w-screen absolute z-10"></LoadingView>
-  <GoogleMap ref="mapRef" :api-key="API_KEY" :center="currentLocation" :disable-default-ui="true" :keyboard-shortcuts="false" :zoom="15" class="h-screen w-screen">
+  <GoogleMap ref="mapRef" :api-key="API_KEY" :center="currentLocation" :disable-default-ui="true" :keyboard-shortcuts="false" :clickable-icons="false" :zoom="15" class="h-screen w-screen">
     <slot></slot>
   </GoogleMap>
   <dialog id="location_permission" class="modal z-30">
