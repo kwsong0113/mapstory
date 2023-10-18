@@ -5,12 +5,13 @@ import { createApp } from "vue";
 import "./app.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faAdd, faLocationArrow } from "@fortawesome/free-solid-svg-icons";
+import { faFaceAngry, faFaceSadCry } from "@fortawesome/free-regular-svg-icons";
+import { faAdd, faCheck, faHeart, faLocationArrow, faQuestion, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import App from "./App.vue";
 import router from "./router";
 
-library.add(faLocationArrow, faAdd);
+library.add(faLocationArrow, faAdd, faHeart, faThumbsUp, faCheck, faQuestion, faFaceSadCry, faFaceAngry);
 
 const app = createApp(App);
 const pinia = createPinia();

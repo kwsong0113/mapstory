@@ -22,9 +22,10 @@ const { data: postMarkers } = usePostMarkers(currentLocation);
     <MapWrapper ref="mapRef">
       <MyMarker />
       <PostMarker
-        v-for="{ post, location } in postMarkers"
+        v-for="{ post, location, reaction } in postMarkers"
         :post="post"
         :location="location"
+        :reaction="reaction"
         :key="post._id"
         @click="
           () => {

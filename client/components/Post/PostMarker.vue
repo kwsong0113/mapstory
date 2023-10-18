@@ -5,10 +5,13 @@ import { CustomMarker } from "vue3-google-map";
 import { useUserStore } from "../../stores/user";
 import { Location } from "../../types/location";
 import { Post } from "../../types/post";
+import { ReactionChoice } from "../../types/reaction";
+import ReactionIcon from "../Reaction/ReactionIcon.vue";
 
-const { location, post } = defineProps<{
+const { location, post, reaction } = defineProps<{
   location: Location;
   post: Post;
+  reaction?: ReactionChoice;
 }>();
 
 const { currentUsername } = storeToRefs(useUserStore());
@@ -16,9 +19,16 @@ const { currentUsername } = storeToRefs(useUserStore());
 <template>
   <CustomMarker :options="{ position: location, anchorPoint: 'BOTTOM_LEFT' }">
     <button @click="$emit('click')" class="indicator text-start">
-      <!-- <span class="indicator-item">
-        <kbd class="kbd kbd-md">{{ "❤️" }}</kbd>
+      <!-- <span v-if="reaction" class="indicator-item">
+        <kbd class="kbd kbd-md">
+          <ReactionIcon :type="reaction" />
+        </kbd>
       </span> -->
+      <span class="indicator-item">
+        <kbd class="kbd kbd-md">
+          <ReactionIcon type="sad" />
+        </kbd>
+      </span>
       <div v-if="post.pieces.length === 1" class="chat chat-start">
         <div
           class="chat-bubble text-base-100 bg-opacity-90 font-semibold max-w-[200px] max-h-[76px] break-all text-sm flex items-center"

@@ -1,5 +1,6 @@
 import { Location } from "../../types/location";
 import { Post, PostPiece } from "../../types/post";
+import { ReactionChoice } from "../../types/reaction";
 import { fetchy } from "../../utils/fetchy";
 
 type CreatePostRequest = {
@@ -23,7 +24,7 @@ export const fetchPosts = async (query: FetchPostsRequest) => {
   return (await fetchy("/api/posts", "GET", {
     query,
     alert: false,
-  })) as { post: Post; location: Location }[];
+  })) as { post: Post; location: Location; reaction?: ReactionChoice }[];
 };
 
 export const updatePostPiece = async ({ _id, content }: Omit<PostPiece, "author">) => {
