@@ -72,8 +72,9 @@ class Routes {
     } else {
       markers = await MapPost.findNearby({}, limit, location);
     }
+    const mostFrequentReactions = await Reaction.getMostFrequentReactions(markers.map(({ poi }) => poi));
 
-    return Responses.postMarkers(markers);
+    return Responses.postMarkers(markers.map((marker, idx) => ({ ...marker, reaction: mostFrequentReactions[idx] as ReactionChoice | undefined })));
   }
 
   /**

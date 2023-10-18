@@ -3,7 +3,7 @@ import { AlreadyContributedError, CollaborationDoc, CollaborationNotMemberError 
 import { MapDoc } from "./concepts/map";
 import { AlreadyMeetingError, MeetingDoc, MeetingNotFoundError, MeetingRequestAlreadyExistsError, MeetingRequestDoc, MeetingRequestNotFoundError } from "./concepts/meeting";
 import { PostAuthorNotMatchError, PostDoc, PostPieceAuthorNotMatchError } from "./concepts/post";
-import { ReactionDoc, ReactionNotFoundError } from "./concepts/reaction";
+import { ReactionChoice, ReactionDoc, ReactionNotFoundError } from "./concepts/reaction";
 import { Router } from "./framework/router";
 
 /**
@@ -38,18 +38,20 @@ export default class Responses {
       })),
     }));
   }
+
   /**
    * Converts an array of MapDoc objects representing post markers
    * into more readable format for the frontend
    */
-  static async postMarkers(postMarkers: MapDoc[]) {
+  static async postMarkers(postMarkers: (MapDoc & { reaction: ReactionChoice | undefined })[]) {
     const postIds = postMarkers.map((markers) => markers.poi);
     const posts = await Post.idsToPosts(postIds);
     const readablePosts = await this.posts(posts);
 
-    return postMarkers.map(({ location }, idx) => ({
+    return postMarkers.map(({ location, reaction }, idx) => ({
       post: readablePosts[idx],
       location,
+      reaction,
     }));
   }
 

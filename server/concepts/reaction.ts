@@ -42,6 +42,31 @@ export default class ReactionConcept {
   }
 
   /**
+   * /**
+   * Gets the most frequent reactions for an array of items
+   *
+   */
+  async getMostFrequentReactions(items: ObjectId[]) {
+    const reactions = await this.reactions.readMany({ to: { $in: items } });
+    const reactionCount: Record<string, Record<ReactionChoice, number>> = {};
+    reactions.forEach(({ to, choice }) => {
+      if (!(to.toString() in reactionCount)) {
+        reactionCount[to.toString()] = { heart: 0, like: 0, check: 0, question: 0, sad: 0, angry: 0 };
+      }
+      reactionCount[to.toString()][choice] += 1;
+    });
+
+    const mostFrequentReactions = Object.fromEntries(
+      Object.entries(reactionCount).map(([id, choices]) => [
+        id,
+        Object.keys(choices).reduce((a?: string, b?: string) => ((a ? choices[a as ReactionChoice] : 0) >= choices[b as ReactionChoice] ? a : b), undefined),
+      ]),
+    );
+
+    return items.map((item) => mostFrequentReactions[item.toString()]);
+  }
+
+  /**
    * Adds or updates a reaction to an item
    */
   async react(to: ObjectId, by: ObjectId, choice: ReactionChoice) {
