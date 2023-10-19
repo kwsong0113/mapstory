@@ -35,4 +35,3 @@ const { isLoggedIn } = storeToRefs(useUserStore());
   z-index: 1;
 }
 </style>
-../stores/auth

@@ -2,19 +2,24 @@
 import { watchLocation } from "@/utils/watchLocation";
 import LoadingView from "@/views/LoadingView.vue";
 import { storeToRefs } from "pinia";
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watchEffect } from "vue";
 import { GoogleMap } from "vue3-google-map";
 import { useLocationStore } from "../../stores/location";
 import { Location } from "../../types/location";
 
-const { currentLocation } = storeToRefs(useLocationStore());
 const API_KEY = import.meta.env.VITE_GOOGLEMAP_API_KEY;
+const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null);
+const { currentLocation } = storeToRefs(useLocationStore());
+const { setMap } = useLocationStore();
 
 onBeforeMount(() => {
   watchLocation();
 });
-
-const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null);
+watchEffect(() => {
+  if (mapRef.value?.map) {
+    setMap(mapRef.value.map);
+  }
+});
 
 const panTo = (location: Location) => {
   mapRef.value?.map.panTo(location);

@@ -75,6 +75,7 @@ export const useMyMeeting = () => {
       }
     },
     refetchInterval: status.value !== "idle" ? 10000 : false,
+    retry: 0,
   });
 };
 
