@@ -19,7 +19,6 @@ const sendMeetingRequest = () => {
 };
 
 const open = () => {
-  console.log(confirmRequest.value);
   if (confirmRequest.value) {
     // @ts-expect-error showModal
     modal.value?.showModal();
@@ -53,7 +52,6 @@ defineExpose({ open, close });
             () => {
               close();
               sendMeetingRequest();
-              console.log(checked);
               if (checked) {
                 collaborationStore.turnOff();
               }

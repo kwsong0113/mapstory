@@ -1,12 +1,12 @@
 export type CollaborationStatus = "idle" | "requested" | "meeting";
 
-export interface contribution {
+export interface Contribution {
   by: string;
   item: string;
 }
 
 export interface Collaboration {
   waitingFor: string[];
-  contributions: contribution[];
+  contributions: Contribution[];
   _id: string;
 }

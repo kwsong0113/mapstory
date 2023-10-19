@@ -51,6 +51,7 @@ export const useAcceptMeetingRequest = () => {
     onSuccess() {
       void queryClient.invalidateQueries(["requests"]);
       void queryClient.invalidateQueries(["meeting"]);
+      void queryClient.invalidateQueries(["collab"]);
     },
   });
 };
@@ -85,6 +86,7 @@ export const useEndMyMeeting = () => {
     mutationFn: endMyMeeting,
     onSuccess() {
       void queryClient.invalidateQueries(["meeting"]);
+      void queryClient.invalidateQueries(["collab"]);
     },
   });
 };
@@ -107,11 +109,13 @@ export const useMyCollaboration = () => {
   });
 };
 
-export const useContribute = () => {
+export const useContribute = ({ onSuccess }: { onSuccess: () => void }) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: contribute,
     onSuccess() {
+      onSuccess();
+      void queryClient.invalidateQueries(["posts"]);
       void queryClient.invalidateQueries(["meeting"]);
       void queryClient.invalidateQueries(["collab"]);
     },

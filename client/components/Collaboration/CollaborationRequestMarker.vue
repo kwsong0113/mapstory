@@ -6,6 +6,7 @@ import { useAcceptMeetingRequest } from "../../services/collaboration";
 import { useLocationStore } from "../../stores/location";
 import { useUserStore } from "../../stores/user";
 import { Location } from "../../types/location";
+import AsyncButton from "../General/AsyncButton.vue";
 
 const { location, username } = defineProps<{
   location: Location;
@@ -14,13 +15,15 @@ const { location, username } = defineProps<{
 
 const { currentLocation } = storeToRefs(useLocationStore());
 const { currentUsername } = storeToRefs(useUserStore());
-const { mutate: acceptMeetingRequest } = useAcceptMeetingRequest();
+const { mutate: acceptMeetingRequest, isLoading } = useAcceptMeetingRequest();
 </script>
 <template>
   <CustomMarker v-if="username !== currentUsername" :options="{ position: location, zIndex: 500 }">
     <kbd class="kbd kbd-md gap-2">
       {{ username }}
-      <button
+      <AsyncButton
+        :class="'w-[62px]'"
+        :is-loading="isLoading"
         @click="
           if (currentLocation) {
             acceptMeetingRequest({ from: username, location: currentLocation });
@@ -29,7 +32,7 @@ const { mutate: acceptMeetingRequest } = useAcceptMeetingRequest();
         class="btn btn-primary btn-xs"
       >
         Accept
-      </button>
+      </AsyncButton>
     </kbd>
   </CustomMarker>
 </template>

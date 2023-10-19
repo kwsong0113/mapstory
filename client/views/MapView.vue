@@ -8,6 +8,7 @@ import MeetingMarker from "../components/Collaboration/MeetingMarker.vue";
 import FloatingButtonGroup from "../components/Map/FloatingButtonGroup.vue";
 import MapWrapper from "../components/Map/MapWrapper.vue";
 import MyMarker from "../components/Map/MyMarker.vue";
+import CollabPostBottomSheet from "../components/Post/CollabPostBottomSheet.vue";
 import CreatePostBottomSheet from "../components/Post/CreatePostBottomSheet.vue";
 import PostMarker from "../components/Post/PostMarker.vue";
 import ViewPostBottomSheet from "../components/Post/ViewPostBottomSheet.vue";
@@ -17,6 +18,7 @@ import { useCollaborationStore } from "../stores/collaboration";
 import { useLocationStore } from "../stores/location";
 
 const createPostBottomSheet = ref<InstanceType<typeof CreatePostBottomSheet> | null>(null);
+const collabPostBottomSheet = ref<InstanceType<typeof CollabPostBottomSheet> | null>(null);
 const viewPostBottomSheet = ref<InstanceType<typeof ViewPostBottomSheet> | null>(null);
 const modal = ref<InstanceType<typeof CollaborationRequestModal> | null>(null);
 const mapRef = ref<InstanceType<typeof MapWrapper> | null>(null);
@@ -60,6 +62,7 @@ useMyMeeting();
   </main>
   <CreatePostBottomSheet ref="createPostBottomSheet" />
   <ViewPostBottomSheet ref="viewPostBottomSheet" />
+  <CollabPostBottomSheet ref="collabPostBottomSheet" />
   <CollaborationRequestModal ref="modal" />
-  <CollaborationStatusHeader v-if="status !== `idle`" />
+  <CollaborationStatusHeader v-if="status !== `idle`" @click="collabPostBottomSheet?.open" />
 </template>

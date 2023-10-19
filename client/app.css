@@ -10,7 +10,8 @@
   @apply text-base-100;
 }
 
-.btn-primary {
+.btn-primary,
+.btn-secondary {
   @apply text-base-100;
 }
 
