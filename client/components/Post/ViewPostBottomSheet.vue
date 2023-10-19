@@ -10,7 +10,7 @@ import PostPiece from "./PostPiece.vue";
 
 const post = ref<Post | null>(null);
 const location = ref<Location | null>(null);
-const { data: address, isLoading } = useAddress(location);
+const { data: address } = useAddress(location);
 const isOpen = ref(false);
 
 const bottomSheetRef = ref<InstanceType<typeof VueBottomSheet>>();

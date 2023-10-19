@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 import { useCollaborationStore } from "../../stores/collaboration";
 import { useLocationStore } from "../../stores/location";
 import { useUserStore } from "../../stores/user";
-import { acceptMeetingRequest, endMyMeeting, fetchMeetingRequestMarkers, fetchMyMeeting, removeMeetingRequest, sendMeetingRequest } from "./apis";
+import { acceptMeetingRequest, contribute, endMyMeeting, fetchMeetingRequestMarkers, fetchMyCollaboration, fetchMyMeeting, removeMeetingRequest, sendMeetingRequest } from "./apis";
 
 export const useSendMeetingRequest = () => {
   const queryClient = useQueryClient();
@@ -85,6 +85,35 @@ export const useEndMyMeeting = () => {
     mutationFn: endMyMeeting,
     onSuccess() {
       void queryClient.invalidateQueries(["meeting"]);
+    },
+  });
+};
+
+export const useMyCollaboration = () => {
+  const { status } = storeToRefs(useCollaborationStore());
+  const { clearCollaboration } = useCollaborationStore();
+
+  return useQuery({
+    queryKey: ["collab"],
+    queryFn: fetchMyCollaboration,
+    onError() {
+      clearCollaboration();
+      if (status.value === "meeting") {
+        status.value = "idle";
+      }
+    },
+    refetchInterval: status.value === "meeting" ? 10000 : false,
+    retry: 0,
+  });
+};
+
+export const useContribute = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: contribute,
+    onSuccess() {
+      void queryClient.invalidateQueries(["meeting"]);
+      void queryClient.invalidateQueries(["collab"]);
     },
   });
 };

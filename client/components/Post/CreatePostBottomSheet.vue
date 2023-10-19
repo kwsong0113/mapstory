@@ -40,9 +40,9 @@ defineExpose({ open, close });
 </script>
 <template>
   <VueBottomSheet ref="bottomSheetRef">
-    <section class="px-5 pb-12">
+    <section class="h-[40vh] w-full px-5 flex flex-col justify-between pb-5">
       <h1 class="p-[2px] mb-1 italic">{{ currentAddress }}</h1>
-      <textarea autofocus ref="textareaRef" v-model="content" class="textarea text-[16px] p-[2px] w-full focus:outline-0 h-40" placeholder="New Post"></textarea>
+      <textarea autofocus ref="textareaRef" v-model="content" class="textarea text-[16px] p-[2px] w-full focus:outline-0 flex-grow" placeholder="New Post"></textarea>
       <AsyncButton @click="createPost" :isLoading="isLoading" :disabled="currentLocation === null || content.length === 0" class="btn btn-primary w-full font-bold text-[16px]">Share</AsyncButton>
     </section>
   </VueBottomSheet>

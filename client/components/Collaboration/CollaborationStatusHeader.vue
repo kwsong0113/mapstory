@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import { onUnmounted, watch } from "vue";
-import { useEndMyMeeting, useMyMeeting, useRemoveMeetingRequest } from "../../services/collaboration";
+import { useEndMyMeeting, useMyCollaboration, useMyMeeting, useRemoveMeetingRequest } from "../../services/collaboration";
 import { useDirection } from "../../services/location";
 import { useCollaborationStore } from "../../stores/collaboration";
 import { useLocationStore } from "../../stores/location";
+import { useUserStore } from "../../stores/user";
 import AsyncButton from "../General/AsyncButton.vue";
 
-const { mutate: removeMeetingRequest, isLoading: isRemoveLoading } = useRemoveMeetingRequest();
-const { mutate: endMyMeeting, isLoading: isEndLoading } = useEndMyMeeting();
 const { status, collaborator, meetingLocation } = storeToRefs(useCollaborationStore());
 const { isLocationAvailable } = storeToRefs(useLocationStore());
+const { currentUsername } = storeToRefs(useUserStore());
+const { mutate: removeMeetingRequest, isLoading: isRemoveLoading } = useRemoveMeetingRequest();
+const { mutate: endMyMeeting, isLoading: isEndLoading } = useEndMyMeeting();
 const { endAddress, showDirection, hideDirection } = useDirection();
 const { isFetching } = useMyMeeting();
+
+const { data: collab } = useMyCollaboration();
 
 watch(
   [isLocationAvailable, meetingLocation],
@@ -21,7 +25,7 @@ watch(
       void showDirection(meetingLocation.value);
     }
   },
-  { immediate: true, deep: true },
+  { immediate: true },
 );
 
 onUnmounted(() => {
@@ -41,9 +45,15 @@ onUnmounted(() => {
       <AsyncButton v-if="status === 'requested'" :is-loading="isRemoveLoading" class="btn btn-sm" @click="() => removeMeetingRequest()">Cancel</AsyncButton>
       <AsyncButton v-if="status === 'meeting'" :is-loading="isEndLoading || isFetching" class="btn btn-sm" @click="() => endMyMeeting()">End</AsyncButton>
     </div>
-    <div v-if="meetingLocation !== null" class="flex flex-row items-center gap-[13px] mt-1 pl-1">
-      <font-awesome-icon icon="fa-solid fa-location-dot" class="h-5" />
-      <p class="italic">{{ endAddress }}</p>
+    <div v-if="status === 'meeting'" class="flex flex-row justify-between mt-[6px]">
+      <div v-if="meetingLocation !== null" class="flex flex-row items-center gap-[13px] pl-1">
+        <font-awesome-icon icon="fa-solid fa-location-dot" class="h-5" />
+        <p class="italic">{{ endAddress }}</p>
+      </div>
+      <span></span>
+      <AsyncButton v-if="collab?.waitingFor.includes(currentUsername)" :is-loading="false" class="btn btn-xs btn-neutral w-[52px]" @click="() => removeMeetingRequest()">
+        <font-awesome-icon icon="fa-solid fa-pen" />
+      </AsyncButton>
     </div>
   </header>
 </template>

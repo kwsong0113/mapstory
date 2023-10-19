@@ -1,3 +1,4 @@
+import { Collaboration } from "../../types/collaboration";
 import { Location } from "../../types/location";
 import { fetchy } from "../../utils/fetchy";
 
@@ -44,4 +45,16 @@ export const fetchMyMeeting = async () => {
 
 export const endMyMeeting = async () => {
   await fetchy("/api/meeting", "DELETE");
+};
+
+export const fetchMyCollaboration = async () => {
+  return (await fetchy("/api/collab", "GET", {
+    alert: false,
+  })) as Collaboration;
+};
+
+export const contribute = async ({ id, content }: { id: string; content: string }) => {
+  await fetchy(`/api/collab/${id}/contribute`, "POST", {
+    body: { content },
+  });
 };
