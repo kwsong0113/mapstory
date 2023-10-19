@@ -55,7 +55,7 @@ const emit = defineEmits(["click"]);
         </kbd>
       </div>
       <AsyncButton v-if="status === 'requested'" :is-loading="isRemoveLoading" class="btn btn-sm" @click="() => removeMeetingRequest()">Cancel</AsyncButton>
-      <AsyncButton v-if="status === 'meeting'" :is-loading="isEndLoading || isFetching" class="btn btn-xs btn-secondary w-[52px]" @click="() => endMyMeeting()">End</AsyncButton>
+      <AsyncButton v-if="status === 'meeting'" :is-loading="isEndLoading || isFetching" class="btn btn-xs btn-warning w-[52px]" @click="() => endMyMeeting()">End</AsyncButton>
     </div>
     <div v-if="status === 'meeting'" class="flex flex-row justify-between mt-[6px] items-center">
       <div v-if="meetingLocation !== null" class="flex flex-row items-center gap-[13px] pl-1">
