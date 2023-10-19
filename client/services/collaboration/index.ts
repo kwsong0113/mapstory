@@ -58,17 +58,18 @@ export const useAcceptMeetingRequest = () => {
 export const useMyMeeting = () => {
   const { currentUsername } = storeToRefs(useUserStore());
   const { status } = storeToRefs(useCollaborationStore());
-  const { setCollaborator, clearCollaborator, changeStatus } = useCollaborationStore();
+  const { setCollaborator, clearCollaboration, changeStatus, setMeetingLocation } = useCollaborationStore();
 
   return useQuery({
     queryKey: ["meeting"],
     queryFn: fetchMyMeeting,
-    onSuccess({ host, guest }) {
+    onSuccess({ host, guest, at }) {
       setCollaborator(host === currentUsername.value ? guest : host);
+      setMeetingLocation(at);
       changeStatus("meeting");
     },
     onError() {
-      clearCollaborator();
+      clearCollaboration();
       if (status.value === "meeting") {
         status.value = "idle";
       }

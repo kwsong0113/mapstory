@@ -4,6 +4,7 @@ import { ref } from "vue";
 import CollaborationRequestMarker from "../components/Collaboration/CollaborationRequestMarker.vue";
 import CollaborationRequestModal from "../components/Collaboration/CollaborationRequestModal.vue";
 import CollaborationStatusHeader from "../components/Collaboration/CollaborationStatusHeader.vue";
+import MeetingMarker from "../components/Collaboration/MeetingMarker.vue";
 import FloatingButtonGroup from "../components/Map/FloatingButtonGroup.vue";
 import MapWrapper from "../components/Map/MapWrapper.vue";
 import MyMarker from "../components/Map/MyMarker.vue";
@@ -43,6 +44,7 @@ useMyMeeting();
         "
       />
       <CollaborationRequestMarker v-for="{ location, meetingRequest: { from } } in requestMarkers" :location="location" :username="from" :key="from" />
+      <MeetingMarker />
     </MapWrapper>
     <FloatingButtonGroup
       @top-click="

@@ -38,6 +38,7 @@ export const fetchMyMeeting = async () => {
   })) as {
     host: string;
     guest: string;
+    at: Location;
   };
 };
 
