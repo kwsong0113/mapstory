@@ -4,14 +4,10 @@ import { CollaborationStatus } from "../types/collaboration";
 import { Location } from "../types/location";
 
 export const useCollaborationStore = defineStore("collaboration", () => {
-  const confirmRequest = ref(true);
   const status = ref<CollaborationStatus>("idle");
   const collaborator = ref<string | null>(null);
   const meetingLocation = ref<Location | null>(null);
 
-  const turnOff = () => {
-    confirmRequest.value = false;
-  };
   const changeStatus = (newStatus: CollaborationStatus) => {
     status.value = newStatus;
   };
@@ -30,11 +26,9 @@ export const useCollaborationStore = defineStore("collaboration", () => {
   };
 
   return {
-    confirmRequest,
     status,
     collaborator,
     meetingLocation,
-    turnOff,
     changeStatus,
     setCollaborator,
     setMeetingLocation,

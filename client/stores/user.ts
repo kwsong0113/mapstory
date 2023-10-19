@@ -5,11 +5,16 @@ export const useUserStore = defineStore(
   "user",
   () => {
     const currentUsername = ref("");
+    const confirmRequest = ref(true);
 
     const isLoggedIn = computed(() => currentUsername.value !== "");
 
     const updateUsername = (username: string) => {
       currentUsername.value = username;
+    };
+
+    const turnOff = () => {
+      confirmRequest.value = false;
     };
 
     const resetStore = () => {
@@ -19,6 +24,8 @@ export const useUserStore = defineStore(
     return {
       currentUsername,
       isLoggedIn,
+      confirmRequest,
+      turnOff,
       updateUsername,
       resetStore,
     };

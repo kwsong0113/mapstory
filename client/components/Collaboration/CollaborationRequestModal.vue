@@ -2,13 +2,13 @@
 import { useSendMeetingRequest } from "@/services/collaboration";
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
-import { useCollaborationStore } from "../../stores/collaboration";
 import { useLocationStore } from "../../stores/location";
+import { useUserStore } from "../../stores/user";
 const modal = ref(null);
 const checked = ref(false);
 
-const collaborationStore = useCollaborationStore();
-const { confirmRequest } = storeToRefs(collaborationStore);
+const userStore = useUserStore();
+const { confirmRequest } = storeToRefs(userStore);
 const { currentLocation } = storeToRefs(useLocationStore());
 const { mutate } = useSendMeetingRequest();
 
@@ -53,7 +53,7 @@ defineExpose({ open, close });
               close();
               sendMeetingRequest();
               if (checked) {
-                collaborationStore.turnOff();
+                userStore.turnOff();
               }
             }
           "
