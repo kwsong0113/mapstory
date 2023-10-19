@@ -40,6 +40,7 @@ export const useMeetingRequestMarkers = () => {
         if (status.value === "requested") status.value = "idle";
       }
     },
+    refetchInterval: status.value === "idle" ? 10000 : false,
   });
 };
 

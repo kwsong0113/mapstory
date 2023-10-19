@@ -26,6 +26,7 @@ export const usePostMarkers = (location: Ref<Location | null>) => {
             }
           : {},
       ),
+    refetchInterval: 10000,
   });
 };
 
