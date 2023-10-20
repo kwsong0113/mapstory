@@ -36,6 +36,5 @@ export const updatePostPiece = async ({ _id, content }: Omit<PostPiece, "author"
 };
 
 export const deletePostPiece = async (id: string) => {
-  console.log(id);
   await fetchy(`/api/posts/${id}`, "DELETE");
 };

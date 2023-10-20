@@ -5,14 +5,17 @@ import CollaborationRequestMarker from "../components/Collaboration/Collaboratio
 import CollaborationRequestModal from "../components/Collaboration/CollaborationRequestModal.vue";
 import CollaborationStatusHeader from "../components/Collaboration/CollaborationStatusHeader.vue";
 import MeetingMarker from "../components/Collaboration/MeetingMarker.vue";
-import FloatingButtonGroup from "../components/Map/FloatingButtonGroup.vue";
+import ColorScaleIndicator from "../components/HeatMap/ColorScaleIndicator.vue";
+import LeftFloatingButtonGroup from "../components/Map/LeftFloatingButtonGroup.vue";
 import MapWrapper from "../components/Map/MapWrapper.vue";
 import MyMarker from "../components/Map/MyMarker.vue";
+import RightFloatingButtonGroup from "../components/Map/RightFloatingButtonGroup.vue";
 import CollabPostBottomSheet from "../components/Post/CollabPostBottomSheet.vue";
 import CreatePostBottomSheet from "../components/Post/CreatePostBottomSheet.vue";
 import PostMarker from "../components/Post/PostMarker.vue";
 import ViewPostBottomSheet from "../components/Post/ViewPostBottomSheet.vue";
 import { useMeetingRequestMarkers, useMyMeeting } from "../services/collaboration";
+import { useHeatMap } from "../services/heatmap";
 import { usePostMarkers } from "../services/post";
 import { useCollaborationStore } from "../stores/collaboration";
 import { useLocationStore } from "../stores/location";
@@ -27,38 +30,48 @@ const { data: postMarkers } = usePostMarkers(currentLocation);
 const { data: requestMarkers } = useMeetingRequestMarkers();
 const { status } = storeToRefs(useCollaborationStore());
 useMyMeeting();
+const { isHeatMapMode, toggleHeatMap } = useHeatMap();
+
+const panToCurrentLocation = () => {
+  if (currentLocation.value) {
+    mapRef.value?.panTo(currentLocation.value);
+  }
+};
+const toggleMode = () => {
+  if (isHeatMapMode.value) {
+    mapRef.value?.setZoom(15);
+  } else {
+    mapRef.value?.setZoom(11);
+  }
+  panToCurrentLocation();
+  toggleHeatMap();
+};
 </script>
 
 <template>
   <main class="w-screen h-screen">
     <MapWrapper ref="mapRef">
       <MyMarker />
-      <PostMarker
-        v-for="{ post, location, reaction } in postMarkers"
-        :post="post"
-        :location="location"
-        :reaction="reaction"
-        :key="post._id"
-        @click="
-          () => {
-            viewPostBottomSheet?.open(post, location);
-          }
-        "
-      />
-      <CollaborationRequestMarker v-for="{ location, meetingRequest: { from } } in requestMarkers" :location="location" :username="from" :key="from" />
-      <MeetingMarker />
+      <template v-if="!isHeatMapMode">
+        <PostMarker
+          v-for="{ post, location, reaction } in postMarkers"
+          :post="post"
+          :location="location"
+          :reaction="reaction"
+          :key="post._id"
+          @click="
+            () => {
+              viewPostBottomSheet?.open(post, location);
+            }
+          "
+        />
+        <CollaborationRequestMarker v-for="{ location, meetingRequest: { from } } in requestMarkers" :location="location" :username="from" :key="from" />
+        <MeetingMarker />
+      </template>
     </MapWrapper>
-    <FloatingButtonGroup
-      @top-click="
-        () => {
-          if (currentLocation) {
-            mapRef?.panTo(currentLocation);
-          }
-        }
-      "
-      @mid-click="modal?.open()"
-      @bottom-click="() => createPostBottomSheet?.open()"
-    />
+    <RightFloatingButtonGroup @top-click="panToCurrentLocation" @mid-click="modal?.open()" @bottom-click="() => createPostBottomSheet?.open()" />
+    <LeftFloatingButtonGroup :is-heat-map-mode="isHeatMapMode" @bottom-click="toggleMode" />
+    <ColorScaleIndicator v-if="isHeatMapMode" />
   </main>
   <CreatePostBottomSheet ref="createPostBottomSheet" />
   <ViewPostBottomSheet ref="viewPostBottomSheet" />

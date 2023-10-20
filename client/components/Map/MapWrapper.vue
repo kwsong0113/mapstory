@@ -4,6 +4,7 @@ import LoadingView from "@/views/LoadingView.vue";
 import { storeToRefs } from "pinia";
 import { onBeforeMount, ref, watch, watchEffect } from "vue";
 import { GoogleMap } from "vue3-google-map";
+import { loadGeoJson } from "../../services/heatmap";
 import { useLocationStore } from "../../stores/location";
 import { Location } from "../../types/location";
 
@@ -15,12 +16,16 @@ const { setMap } = useLocationStore();
 const panTo = (location: Location) => {
   mapRef.value?.map.panTo(location);
 };
+const setZoom = (zoom: number) => {
+  mapRef.value?.map.setZoom(zoom);
+};
 onBeforeMount(() => {
   watchLocation();
 });
 watchEffect(() => {
   if (mapRef.value?.map) {
     setMap(mapRef.value.map);
+    loadGeoJson(mapRef.value?.map);
   }
 });
 
@@ -31,6 +36,7 @@ watch(isLocationAvailable, () => {
 });
 defineExpose({
   panTo,
+  setZoom,
 });
 </script>
 
