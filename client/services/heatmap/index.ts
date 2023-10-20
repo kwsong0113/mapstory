@@ -53,7 +53,7 @@ export const useHeatMap = () => {
 };
 
 export const loadGeoJson = (map: any) => {
-  map.data.loadGeoJson("/client/assets/geojson/data.geojson");
+  map.data.loadGeoJson("/data.geojson");
   map.data.setStyle({
     visible: false,
   });
