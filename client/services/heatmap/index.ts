@@ -88,6 +88,6 @@ export const useHeatMapControl = () => {
 };
 
 function scoreToColor(score: number) {
-  const color = d3.scaleLinear([-3, -2.1, -0.6, 0, 0.6, 2.4, 3], ["darkred", "red", "darkred", "white", "palegreen", "green", "darkgreen"])(score);
+  const color = d3.scaleLinear([-3, 0, 3], ["red", "white", "green"])(score);
   return color;
 }

@@ -18,7 +18,7 @@
 </template>
 <style scoped>
 .grad {
-  background: linear-gradient(to right, darkred 0%, red 15%, lightcoral 40%, white 50%, palegreen 60%, green 90%, darkgreen 100%);
+  background: linear-gradient(to right, red 0%, white 50%, palegreen 60%, green 100%);
   @apply border-2 border-base-300 rounded-lg;
 }
 
