@@ -14,6 +14,7 @@ import CollabPostBottomSheet from "../components/Post/CollabPostBottomSheet.vue"
 import CreatePostBottomSheet from "../components/Post/CreatePostBottomSheet.vue";
 import PostMarker from "../components/Post/PostMarker.vue";
 import ViewPostBottomSheet from "../components/Post/ViewPostBottomSheet.vue";
+import SettingsBottomSheet from "../components/User/SettingsBottomSheet.vue";
 import { useMeetingRequestMarkers, useMyMeeting } from "../services/collaboration";
 import { useHeatMap } from "../services/heatmap";
 import { usePostMarkers } from "../services/post";
@@ -23,6 +24,7 @@ import { useLocationStore } from "../stores/location";
 const createPostBottomSheet = ref<InstanceType<typeof CreatePostBottomSheet> | null>(null);
 const collabPostBottomSheet = ref<InstanceType<typeof CollabPostBottomSheet> | null>(null);
 const viewPostBottomSheet = ref<InstanceType<typeof ViewPostBottomSheet> | null>(null);
+const settingsBottomSheet = ref<InstanceType<typeof SettingsBottomSheet> | null>(null);
 const modal = ref<InstanceType<typeof CollaborationRequestModal> | null>(null);
 const mapRef = ref<InstanceType<typeof MapWrapper> | null>(null);
 const { currentLocation } = storeToRefs(useLocationStore());
@@ -70,12 +72,13 @@ const toggleMode = () => {
       </template>
     </MapWrapper>
     <RightFloatingButtonGroup @top-click="panToCurrentLocation" @mid-click="modal?.open()" @bottom-click="() => createPostBottomSheet?.open()" />
-    <LeftFloatingButtonGroup :is-heat-map-mode="isHeatMapMode" @bottom-click="toggleMode" />
+    <LeftFloatingButtonGroup :is-heat-map-mode="isHeatMapMode" @top-click="settingsBottomSheet?.open" @bottom-click="toggleMode" />
     <ColorScaleIndicator v-if="isHeatMapMode" />
   </main>
   <CreatePostBottomSheet ref="createPostBottomSheet" />
   <ViewPostBottomSheet ref="viewPostBottomSheet" />
   <CollabPostBottomSheet ref="collabPostBottomSheet" />
+  <SettingsBottomSheet ref="settingsBottomSheet" />
   <CollaborationRequestModal ref="modal" />
   <CollaborationStatusHeader v-if="status !== `idle`" @click="collabPostBottomSheet?.open" />
 </template>

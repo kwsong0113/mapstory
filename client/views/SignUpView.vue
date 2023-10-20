@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import UserForm from "@/components/Auth/UserForm.vue";
 import NavBar from "@/components/General/NavBar.vue";
+import UserForm from "@/components/User/UserForm.vue";
 import { RouterLink } from "vue-router";
 </script>
 <template>
