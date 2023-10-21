@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
+import NotFoundView from "../views/NotFoundView.vue";
 import SignUpView from "../views/SignUpView.vue";
 
 const router = createRouter({
@@ -14,12 +15,6 @@ const router = createRouter({
       name: "Home",
       component: HomeView,
     },
-    // {
-    //   path: "/setting",
-    //   name: "Settings",
-    //   component: SettingView,
-    //   meta: { requiresAuth: true },
-    // },
     {
       path: "/login",
       name: "Login",
@@ -44,11 +39,11 @@ const router = createRouter({
         }
       },
     },
-    // {
-    //   path: "/:catchAll(.*)",
-    //   name: "not-found",
-    //   component: NotFoundView,
-    // },
+    {
+      path: "/:catchAll(.*)",
+      name: "not-found",
+      component: NotFoundView,
+    },
   ],
 });
 
