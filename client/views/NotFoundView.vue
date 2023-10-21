@@ -1,5 +1,5 @@
 <template>
-  <div class="hero min-h-screen font-poppins">
+  <div class="hero h-screen font-poppins">
     <div class="hero-content text-center">
       <div class="max-w-md">
         <h1 class="text-6xl font-bold mb-1">404</h1>
