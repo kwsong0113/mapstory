@@ -1,7 +1,8 @@
 <script setup lang="ts">
-const emit = defineEmits(["bottomClick", "topClick"]);
-const { isHeatMapMode } = defineProps<{
+const emit = defineEmits(["bottomClick", "midClick", "topClick"]);
+const { isHeatMapMode, showMyPosts } = defineProps<{
   isHeatMapMode: boolean;
+  showMyPosts: boolean;
 }>();
 </script>
 <template>
@@ -9,6 +10,10 @@ const { isHeatMapMode } = defineProps<{
     <div class="join join-vertical w-12 shadow-[0px_4px_6px_#04366C]">
       <button @click="emit('topClick')" class="btn bg-white join-item">
         <font-awesome-icon icon="fa-solid fa-gear" class="h-5 text-neutral" />
+      </button>
+      <button @click="emit('midClick')" class="btn join-item" :class="showMyPosts ? 'btn-warning' : 'btn-neutral'">
+        <font-awesome-icon v-if="showMyPosts" icon="fa-solid fa-filter-circle-xmark" class="h-5" />
+        <font-awesome-icon v-else icon="fa-solid fa-filter" class="h-5" />
       </button>
       <button @click="emit('bottomClick')" class="btn btn-neutral join-item">
         <font-awesome-icon v-if="isHeatMapMode" icon="fa-solid fa-map" class="h-5" />

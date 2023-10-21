@@ -10,8 +10,8 @@ import { Location } from "../../types/location";
 
 const API_KEY = import.meta.env.VITE_GOOGLEMAP_API_KEY;
 const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null);
-const { currentLocation, isLocationAvailable } = storeToRefs(useLocationStore());
-const { setMap } = useLocationStore();
+const { currentLocation, isLocationAvailable, center } = storeToRefs(useLocationStore());
+const { setMap, clearCenter } = useLocationStore();
 
 const panTo = (location: Location) => {
   mapRef.value?.map.panTo(location);
@@ -28,7 +28,11 @@ watchEffect(() => {
 });
 
 watch(isLocationAvailable, () => {
-  if (currentLocation.value) {
+  if (center.value) {
+    panTo(center.value);
+    setZoom(17);
+    clearCenter();
+  } else if (currentLocation.value) {
     panTo(currentLocation.value);
   }
 });

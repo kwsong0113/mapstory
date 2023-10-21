@@ -6,7 +6,23 @@ import "./app.css";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faFaceAngry, faFaceFrown, faFaceMeh, faFaceSadCry, faFaceSmile } from "@fortawesome/free-regular-svg-icons";
-import { faAdd, faCheck, faGear, faHeart, faLocationArrow, faLocationDot, faMap, faPen, faQuestion, faSpinner, faThumbsUp, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import {
+  faAdd,
+  faCheck,
+  faFilter,
+  faFilterCircleXmark,
+  faGear,
+  faHeart,
+  faLocationArrow,
+  faLocationDot,
+  faMap,
+  faPen,
+  faQuestion,
+  faSpinner,
+  faThumbsUp,
+  faUserGroup,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import App from "./App.vue";
 import router from "./router";
@@ -29,6 +45,9 @@ library.add(
   faFaceMeh,
   faFaceFrown,
   faGear,
+  faFilter,
+  faFilterCircleXmark,
+  faXmark,
 );
 
 const app = createApp(App);

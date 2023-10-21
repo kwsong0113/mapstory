@@ -51,7 +51,7 @@ const toggleEditing = async () => {
       <AsyncButton v-else :is-loading="isDeleteLoading" class="btn btn-mini btn-warning" @click="deletePostPiece(piece._id)">Delete</AsyncButton>
     </div>
   </div>
-  <textarea autofocus ref="textareaRef" v-show="editing" v-model="editContent" class="content h-40 focus:outline-0" :class="{ my: isAuthor }"></textarea>
+  <textarea autofocus ref="textareaRef" v-show="editing" v-model="editContent" class="content h-40 focus:outline-0 w-full" :class="{ my: isAuthor }"></textarea>
   <article v-show="!editing" class="content" :class="{ my: isAuthor }">{{ content }}</article>
 </template>
 

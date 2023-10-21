@@ -8,6 +8,7 @@ export const useLocationStore = defineStore("location", () => {
   const isLocationAvailable = computed(() => currentLocation.value !== null);
   const currentAddress = ref<string>("");
   const map = ref<any>(null);
+  const center = ref<Location | null>(null);
 
   const setMap = (newMap: any) => {
     map.value = newMap;
@@ -25,9 +26,17 @@ export const useLocationStore = defineStore("location", () => {
     }
   };
 
+  const setCenter = (location: Location) => {
+    center.value = location;
+  };
+
+  const clearCenter = () => {
+    center.value = null;
+  };
+
   const clearLocation = () => {
     currentLocation.value = null;
   };
 
-  return { map, currentLocation, isLocationAvailable, currentAddress, setMap, updateAddress, updateLocation, clearLocation };
+  return { map, currentLocation, center, isLocationAvailable, currentAddress, setMap, updateAddress, updateLocation, clearLocation, setCenter, clearCenter };
 });

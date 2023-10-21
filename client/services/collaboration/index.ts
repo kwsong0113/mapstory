@@ -116,6 +116,7 @@ export const useContribute = ({ onSuccess }: { onSuccess: () => void }) => {
     onSuccess() {
       onSuccess();
       void queryClient.invalidateQueries(["posts"]);
+      void queryClient.invalidateQueries(["myPosts"]);
       void queryClient.invalidateQueries(["meeting"]);
       void queryClient.invalidateQueries(["collab"]);
     },

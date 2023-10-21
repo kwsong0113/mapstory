@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import CollaborationRequestMarker from "../components/Collaboration/CollaborationRequestMarker.vue";
 import CollaborationRequestModal from "../components/Collaboration/CollaborationRequestModal.vue";
 import CollaborationStatusHeader from "../components/Collaboration/CollaborationStatusHeader.vue";
 import MeetingMarker from "../components/Collaboration/MeetingMarker.vue";
 import ColorScaleIndicator from "../components/HeatMap/ColorScaleIndicator.vue";
+import FilterBottomSheet from "../components/Map/FilterBottomSheet.vue";
 import LeftFloatingButtonGroup from "../components/Map/LeftFloatingButtonGroup.vue";
 import MapWrapper from "../components/Map/MapWrapper.vue";
 import MyMarker from "../components/Map/MyMarker.vue";
@@ -17,7 +18,7 @@ import ViewPostBottomSheet from "../components/Post/ViewPostBottomSheet.vue";
 import SettingsBottomSheet from "../components/User/SettingsBottomSheet.vue";
 import { useMeetingRequestMarkers, useMyMeeting } from "../services/collaboration";
 import { useHeatMap } from "../services/heatmap";
-import { usePostMarkers } from "../services/post";
+import { useMyPostMarkers, usePostMarkers } from "../services/post";
 import { useCollaborationStore } from "../stores/collaboration";
 import { useLocationStore } from "../stores/location";
 
@@ -25,10 +26,14 @@ const createPostBottomSheet = ref<InstanceType<typeof CreatePostBottomSheet> | n
 const collabPostBottomSheet = ref<InstanceType<typeof CollabPostBottomSheet> | null>(null);
 const viewPostBottomSheet = ref<InstanceType<typeof ViewPostBottomSheet> | null>(null);
 const settingsBottomSheet = ref<InstanceType<typeof SettingsBottomSheet> | null>(null);
+const filterBottomSheet = ref<InstanceType<typeof FilterBottomSheet> | null>(null);
 const modal = ref<InstanceType<typeof CollaborationRequestModal> | null>(null);
 const mapRef = ref<InstanceType<typeof MapWrapper> | null>(null);
+const showMyPosts = ref(false);
 const { currentLocation } = storeToRefs(useLocationStore());
 const { data: postMarkers } = usePostMarkers(currentLocation);
+const { data: myPostMarkers } = useMyPostMarkers();
+const postMarkersToShow = computed(() => (showMyPosts.value ? myPostMarkers.value : postMarkers.value));
 const { data: requestMarkers } = useMeetingRequestMarkers();
 const { status } = storeToRefs(useCollaborationStore());
 useMyMeeting();
@@ -56,7 +61,7 @@ const toggleMode = () => {
       <MyMarker />
       <template v-if="!isHeatMapMode">
         <PostMarker
-          v-for="{ post, location, reaction } in postMarkers"
+          v-for="{ post, location, reaction } in postMarkersToShow"
           :post="post"
           :location="location"
           :reaction="reaction"
@@ -72,13 +77,28 @@ const toggleMode = () => {
       </template>
     </MapWrapper>
     <RightFloatingButtonGroup @top-click="panToCurrentLocation" @mid-click="modal?.open()" @bottom-click="() => createPostBottomSheet?.open()" />
-    <LeftFloatingButtonGroup :is-heat-map-mode="isHeatMapMode" @top-click="settingsBottomSheet?.open" @bottom-click="toggleMode" />
+    <LeftFloatingButtonGroup
+      :is-heat-map-mode="isHeatMapMode"
+      :show-my-posts="showMyPosts"
+      @top-click="settingsBottomSheet?.open"
+      @mid-click="
+        () => {
+          if (showMyPosts) {
+            showMyPosts = false;
+          } else {
+            filterBottomSheet?.open();
+          }
+        }
+      "
+      @bottom-click="toggleMode"
+    />
     <ColorScaleIndicator v-if="isHeatMapMode" />
   </main>
   <CreatePostBottomSheet ref="createPostBottomSheet" />
   <ViewPostBottomSheet ref="viewPostBottomSheet" />
   <CollabPostBottomSheet ref="collabPostBottomSheet" />
   <SettingsBottomSheet ref="settingsBottomSheet" />
+  <FilterBottomSheet ref="filterBottomSheet" @top-click="showMyPosts = true" />
   <CollaborationRequestModal ref="modal" />
   <CollaborationStatusHeader v-if="status !== `idle`" @click="collabPostBottomSheet?.open" />
 </template>
