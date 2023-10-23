@@ -12,6 +12,7 @@ const API_KEY = import.meta.env.VITE_GOOGLEMAP_API_KEY;
 const mapRef = ref<InstanceType<typeof GoogleMap> | null>(null);
 const { currentLocation, isLocationAvailable, center } = storeToRefs(useLocationStore());
 const { setMap, clearCenter } = useLocationStore();
+const mapInitialized = ref(false);
 
 const panTo = (location: Location) => {
   mapRef.value?.map.panTo(location);
@@ -19,6 +20,18 @@ const panTo = (location: Location) => {
 const setZoom = (zoom: number) => {
   mapRef.value?.map.setZoom(zoom);
 };
+const initMap = () => {
+  if (center.value) {
+    panTo(center.value);
+    setZoom(17);
+    clearCenter();
+    mapInitialized.value = true;
+  } else if (currentLocation.value) {
+    panTo(currentLocation.value);
+    mapInitialized.value = true;
+  }
+};
+
 useWatchLocation();
 watchEffect(() => {
   if (mapRef.value?.map) {
@@ -27,18 +40,18 @@ watchEffect(() => {
   }
 });
 
-watch([isLocationAvailable, () => mapRef.value?.map], () => {
-  if (!mapRef.value?.map) {
-    return;
-  }
-  if (center.value) {
-    panTo(center.value);
-    setZoom(17);
-    clearCenter();
-  } else if (currentLocation.value) {
-    panTo(currentLocation.value);
-  }
-});
+watch(
+  [isLocationAvailable, () => mapRef.value?.map],
+  () => {
+    if (!mapRef.value?.map || mapInitialized.value) {
+      return;
+    }
+    initMap();
+  },
+  {
+    immediate: true,
+  },
+);
 defineExpose({
   panTo,
   setZoom,

@@ -28,7 +28,6 @@ export const useWatchLocation = () => {
   });
 
   onUnmounted(() => {
-    clearLocation();
     if (watchId.value) {
       navigator.geolocation.clearWatch(watchId.value);
     }
