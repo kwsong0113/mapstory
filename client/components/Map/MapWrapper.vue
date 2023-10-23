@@ -27,7 +27,10 @@ watchEffect(() => {
   }
 });
 
-watch(isLocationAvailable, () => {
+watch([isLocationAvailable, () => mapRef.value?.map], () => {
+  if (!mapRef.value?.map) {
+    return;
+  }
   if (center.value) {
     panTo(center.value);
     setZoom(17);
@@ -43,7 +46,7 @@ defineExpose({
 </script>
 
 <template>
-  <LoadingView v-if="currentLocation === null" class="w-screen absolute z-10"></LoadingView>
+  <LoadingView v-if="!isLocationAvailable" class="w-screen absolute z-10"></LoadingView>
   <GoogleMap ref="mapRef" :api-key="API_KEY" :disable-default-ui="true" :keyboard-shortcuts="false" :clickable-icons="false" :zoom="15" class="h-screen w-screen">
     <slot></slot>
   </GoogleMap>

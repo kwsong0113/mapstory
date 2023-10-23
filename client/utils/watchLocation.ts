@@ -19,6 +19,11 @@ export const useWatchLocation = () => {
           document.getElementById("location_permission")?.showModal();
         }
       },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      },
     );
   });
 
